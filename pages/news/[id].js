@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { getNews, getNewsById } from '../../lib/notion';
+import { getNews, getNewsById } from '../lib/notion';
 
 export async function getStaticPaths() {
   try {
