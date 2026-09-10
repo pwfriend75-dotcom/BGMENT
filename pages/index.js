@@ -1,130 +1,172 @@
 import Link from 'next/link';
-import { getNews } from '../lib/notion';
+import { getArtists, getNews } from '../lib/notion';
 
-export async function getStaticProps() {
-  try {
-    const newsList = await getNews();
-
-    return {
-      props: {
-        newsList,
-      },
-      revalidate: 60,
-    };
-  } catch (error) {
-    console.error('News List getStaticProps Error:', error);
-
-    return {
-      props: {
-        newsList: [],
-      },
-      revalidate: 60,
-    };
-  }
-}
-
-function formatDate(dateString) {
-  if (!dateString) return '';
-
-  try {
-    const date = new Date(dateString);
-
-    return new Intl.DateTimeFormat('ko-KR', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-    }).format(date);
-  } catch {
-    return dateString;
-  }
-}
-
-export default function NewsList({ newsList = [] }) {
+export default function Home({ artists, news }) {
   return (
-    <main className="min-h-screen bg-black text-white">
-
-      <section className="max-w-5xl mx-auto px-6 pt-24 pb-12">
-
-        <p className="text-xs text-gray-500 uppercase tracking-[0.3em] mb-3">
-          BGM Entertainment
-        </p>
-
-        <h1 className="text-4xl md:text-6xl font-black tracking-tight">
-          NEWS & NOTICE
-        </h1>
-
-        <p className="text-gray-500 mt-4">
-          BGM Entertainment Announcement
-        </p>
-
-      </section>
-
-
-      <section className="max-w-5xl mx-auto px-6 pb-24">
-
-        {newsList.length > 0 ? (
-
-          <div className="border-t border-zinc-800">
-
-            {newsList.map((item) => (
-
-              <Link
-                key={item.id}
-                href={`/news/${item.id}`}
-                className="block"
-              >
-
-                <article className="border-b border-zinc-800 py-6 px-2 hover:bg-zinc-950 transition">
-
-                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-
-                    <div className="flex items-center gap-4 min-w-0">
-
-                      <span
-                        className={`shrink-0 text-[11px] px-2 py-1 rounded font-medium ${
-                          item.category === '공지'
-                            ? 'bg-red-900/40 text-red-400 border border-red-800/50'
-                            : 'bg-zinc-800 text-gray-300'
-                        }`}
-                      >
-                        {item.category}
-                      </span>
-
-                      <h2 className="text-sm md:text-base font-medium text-white truncate">
-                        {item.title}
-                      </h2>
-
-                    </div>
-
-
-                    <time className="text-xs text-gray-500 md:ml-6 whitespace-nowrap">
-                      {formatDate(item.date)}
-                    </time>
-
-                  </div>
-
-                </article>
-
-              </Link>
-
-            ))}
-
+    <>
+      {/* HERO */}
+      <section className="hero">
+        <div className="site-container hero-inner">
+          <div className="hero-subtitle">
+            BOX GLOBAL MEDIA
           </div>
 
-        ) : (
+          <h1 className="display-title">
+            BOX<br />
+            GLOBAL<br />
+            <span className="bgm-accent">MEDIA</span>
+          </h1>
 
-          <div className="border border-zinc-800 rounded-xl py-20 text-center">
-
-            <p className="text-gray-500">
-              등록된 뉴스가 없습니다.
+          <div className="hero-bottom">
+            <p className="hero-description">
+              We create music, artists and content
+              that connect with audiences around the world.
             </p>
 
+            <div className="hero-subtitle">
+              MUSIC · ARTIST · CONTENT
+            </div>
           </div>
-
-        )}
-
+        </div>
       </section>
 
-    </main>
+      {/* ARTISTS */}
+      <section className="section section-line">
+        <div className="site-container">
+          <div className="section-header">
+            <h2 className="section-title">ARTISTS</h2>
+
+            <Link href="/artist" className="section-link">
+              VIEW ALL →
+            </Link>
+          </div>
+
+          {artists?.length > 0 ? (
+            <div className="artist-grid">
+              {artists.slice(0, 6).map((artist) => (
+                <Link
+                  href={`/artist/${artist.id}`}
+                  className="artist-card"
+                  key={artist.id}
+                >
+                  <div className="artist-image-wrap">
+                    {artist.thumbnail && (
+                      <img
+                        src={artist.thumbnail}
+                        alt={artist.name}
+                      />
+                    )}
+                  </div>
+
+                  <div className="artist-card-info">
+                    <div className="artist-name">
+                      {artist.name}
+                    </div>
+
+                    <div className="artist-type">
+                      {artist.englishName || artist.type}
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <p className="body-copy">
+              Artist information will be updated soon.
+            </p>
+          )}
+        </div>
+      </section>
+
+      {/* NEWS */}
+      <section className="section section-line">
+        <div className="site-container">
+          <div className="section-header">
+            <h2 className="section-title">LATEST NEWS</h2>
+
+            <Link href="/news" className="section-link">
+              VIEW ALL →
+            </Link>
+          </div>
+
+          {news?.length > 0 ? (
+            <div className="news-list">
+              {news.slice(0, 5).map((item) => (
+                <Link
+                  href={`/news/${item.id}`}
+                  className="news-item"
+                  key={item.id}
+                >
+                  <div className="news-date">
+                    {formatDate(item.date)}
+                  </div>
+
+                  <div className="news-category">
+                    {item.category}
+                  </div>
+
+                  <div className="news-title">
+                    {item.title}
+                  </div>
+
+                  <div className="news-arrow">
+                    →
+                  </div>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <p className="body-copy">
+              News will be updated soon.
+            </p>
+          )}
+        </div>
+      </section>
+
+      {/* COMPANY */}
+      <section className="section section-line">
+        <div className="site-container company-statement">
+          <div className="large-copy">
+            WE CREATE<br />
+            MUSIC, ARTISTS<br />
+            <span className="bgm-accent">AND STORIES.</span>
+          </div>
+
+          <div className="company-statement-small">
+            BOX GLOBAL MEDIA
+          </div>
+        </div>
+      </section>
+    </>
   );
+}
+
+function formatDate(date) {
+  if (!date) return '';
+
+  const d = new Date(date);
+
+  if (Number.isNaN(d.getTime())) {
+    return '';
+  }
+
+  return d
+    .toLocaleDateString('en-CA')
+    .replaceAll('-', '.');
+}
+
+export async function getStaticProps() {
+  const [artists, news] = await Promise.all([
+    getArtists(),
+    getNews(),
+  ]);
+
+  return {
+    props: {
+      artists: artists || [],
+      news: news || [],
+    },
+
+    revalidate: 60,
+  };
 }
