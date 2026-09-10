@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { getArtists } from '../../lib/notion';
+import { getArtists } from '../lib/notion';
 
 export async function getStaticProps() {
   try {
