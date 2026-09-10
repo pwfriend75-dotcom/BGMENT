@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { getArtists, getArtistById } from '../../lib/notion';
+import { getArtists, getArtistById } from '../lib/notion';
 
 export async function getStaticPaths() {
   try {
