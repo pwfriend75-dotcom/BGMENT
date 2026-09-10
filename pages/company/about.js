@@ -1,44 +1,162 @@
+import Link from 'next/link';
+
 export default function About() {
   return (
-    <div className="max-w-5xl mx-auto px-6 py-20">
-      <h1 className="text-4xl font-black tracking-tight mb-2 uppercase">ABOUT BGM</h1>
-      <p className="text-gray-500 mb-16">Creating Beyond Sound, Inspiring the World</p>
+    <>
+      <section className="page-header">
+        <div className="site-container">
+          <div className="hero-subtitle">
+            BOX GLOBAL MEDIA
+          </div>
 
-      {/* 비전 & 슬로건 */}
-      <section className="mb-20">
-        <h2 className="text-xs text-gray-500 uppercase tracking-widest font-semibold mb-3">
-          Vision & Slogan
-        </h2>
-        <h3 className="text-2xl md:text-3xl font-bold leading-relaxed mb-6">
-          "소리 그 이상의 가치를 창조하고, 글로벌 엔터테인먼트의 새로운 기준을 제시합니다."
-        </h3>
-        <p className="text-gray-400 leading-relaxed max-w-3xl">
-          BGM Entertainment는 아티스트의 고유한 매력을 극대화하여 글로벌 대중문화를 선도하는 
-          종합 엔터테인먼트 기업입니다. 체계적인 신인 발굴 시스템과 독창적인 콘텐츠 기획력을 바탕으로 
-          음악, 방송, 미디어 아트를 아우르는 트렌드를 만들어갑니다.
-        </p>
-      </section>
-
-      {/* CEO 메시지 */}
-      <section className="border-t border-zinc-800 pt-16">
-        <h2 className="text-xs text-gray-500 uppercase tracking-widest font-semibold mb-3">
-          CEO Message
-        </h2>
-        <h3 className="text-xl font-bold mb-6">대표이사 인사말</h3>
-        <div className="space-y-4 text-gray-300 leading-relaxed max-w-3xl">
-          <p>
-            안녕하십니까, BGM Entertainment 홈페이지를 방문해주신 여러분을 진심으로 환영합니다.
-          </p>
-          <p>
-            저희 BGM은 빠르게 변화하는 글로벌 엔터테인먼트 시장 속에서 혁신적인 아이디어와 
-            아티스트 중심의 디렉팅을 통해 한계 없는 성장을 이뤄가고 있습니다.
-          </p>
-          <p>
-            아티스트와 팬, 그리고 대중 모두가 공감할 수 있는 최고의 문화 콘텐츠를 선사할 것을 약속드립니다.
-          </p>
-          <p className="pt-6 font-semibold text-white">BGM Entertainment 대표이사 권영인</p>
+          <h1 className="page-title">
+            ABOUT
+          </h1>
         </div>
       </section>
-    </div>
+
+      <section className="section section-line">
+        <div className="site-container">
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: '80px',
+              alignItems: 'start',
+            }}
+          >
+            <div>
+              <div className="hero-subtitle">
+                WHO WE ARE
+              </div>
+            </div>
+
+            <div>
+              <h2 className="large-copy">
+                WE CREATE
+                <br />
+                MUSIC,
+                <br />
+                ARTISTS
+                <br />
+                <span className="bgm-accent">
+                  AND CONTENT.
+                </span>
+              </h2>
+
+              <p
+                className="body-copy"
+                style={{
+                  marginTop: '50px',
+                  maxWidth: '620px',
+                }}
+              >
+                BOX GLOBAL MEDIA는 아티스트와 음악,
+                콘텐츠를 통해 새로운 가치를 만들어가는
+                엔터테인먼트 회사입니다.
+              </p>
+
+              <p
+                className="body-copy"
+                style={{
+                  marginTop: '20px',
+                  maxWidth: '620px',
+                }}
+              >
+                아티스트의 개성과 가능성을 발견하고,
+                음악과 다양한 미디어 콘텐츠를 통해
+                더 많은 사람들과 연결되는 것을 목표로 합니다.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section
+        className="section section-line"
+        style={{
+          background: '#111',
+          color: '#fff',
+        }}
+      >
+        <div className="site-container">
+          <div className="hero-subtitle">
+            OUR VISION
+          </div>
+
+          <div
+            className="large-copy"
+            style={{
+              marginTop: '45px',
+              maxWidth: '1100px',
+            }}
+          >
+            CONNECTING
+            <br />
+            ARTISTS AND
+            <br />
+            AUDIENCES
+            <br />
+            <span className="bgm-accent">
+              BEYOND BORDERS.
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <section className="section section-line">
+        <div className="site-container">
+          <div className="section-header">
+            <h2 className="section-title">
+              WHAT WE DO
+            </h2>
+          </div>
+
+          <div className="news-list">
+            <div className="news-item">
+              <div className="news-date">01</div>
+              <div className="news-category">
+                MUSIC
+              </div>
+              <div className="news-title">
+                Music Production &amp; Distribution
+              </div>
+              <div className="news-arrow">→</div>
+            </div>
+
+            <div className="news-item">
+              <div className="news-date">02</div>
+              <div className="news-category">
+                ARTIST
+              </div>
+              <div className="news-title">
+                Artist Management &amp; Development
+              </div>
+              <div className="news-arrow">→</div>
+            </div>
+
+            <div className="news-item">
+              <div className="news-date">03</div>
+              <div className="news-category">
+                CONTENT
+              </div>
+              <div className="news-title">
+                Media &amp; Entertainment Content
+              </div>
+              <div className="news-arrow">→</div>
+            </div>
+          </div>
+
+          <div style={{ marginTop: '70px' }}>
+            <Link
+              href="/company/business"
+              className="section-link"
+            >
+              VIEW OUR BUSINESS →
+            </Link>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }
