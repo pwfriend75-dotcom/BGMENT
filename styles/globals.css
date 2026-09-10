@@ -2,46 +2,560 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  body {
-    @apply bg-neutral-950 text-neutral-100 min-h-screen antialiased;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+/* =====================================================
+   BGM — BOX GLOBAL MEDIA
+   Global Style
+===================================================== */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #f7f7f4;
+  color: #111111;
+  font-family:
+    Arial,
+    Helvetica,
+    "Pretendard",
+    "Noto Sans KR",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+/* =====================================================
+   Layout
+===================================================== */
+
+.site-container {
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding-left: 48px;
+  padding-right: 48px;
+}
+
+.section {
+  padding-top: 120px;
+  padding-bottom: 120px;
+}
+
+.section-line {
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+/* =====================================================
+   Typography
+===================================================== */
+
+.display-title {
+  font-size: clamp(64px, 9vw, 150px);
+  line-height: 0.88;
+  letter-spacing: -0.065em;
+  font-weight: 700;
+}
+
+.section-title {
+  font-size: clamp(38px, 5vw, 78px);
+  line-height: 1;
+  letter-spacing: -0.05em;
+  font-weight: 700;
+}
+
+.large-copy {
+  font-size: clamp(28px, 3.5vw, 60px);
+  line-height: 1.05;
+  letter-spacing: -0.045em;
+}
+
+.body-copy {
+  font-size: 16px;
+  line-height: 1.7;
+  color: #555;
+}
+
+/* =====================================================
+   BGM Accent
+===================================================== */
+
+.bgm-accent {
+  color: #55e9f1;
+}
+
+.bgm-accent-bg {
+  background: #55e9f1;
+}
+
+/* =====================================================
+   Header
+===================================================== */
+
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background: rgba(247, 247, 244, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.header-inner {
+  height: 82px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-logo {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.06em;
+}
+
+.header-nav {
+  display: flex;
+  align-items: center;
+  gap: 38px;
+}
+
+.header-nav a {
+  position: relative;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+.header-nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 0;
+  height: 1px;
+  background: #111;
+  transition: width 0.25s ease;
+}
+
+.header-nav a:hover::after {
+  width: 100%;
+}
+
+/* =====================================================
+   Hero
+===================================================== */
+
+.hero {
+  min-height: 100vh;
+  padding-top: 130px;
+  display: flex;
+  align-items: flex-end;
+}
+
+.hero-inner {
+  width: 100%;
+  padding-bottom: 70px;
+}
+
+.hero-subtitle {
+  margin-bottom: 28px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+}
+
+.hero-bottom {
+  margin-top: 60px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.hero-description {
+  max-width: 420px;
+  font-size: 17px;
+  line-height: 1.65;
+  color: #555;
+}
+
+/* =====================================================
+   Section Header
+===================================================== */
+
+.section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 50px;
+}
+
+.section-link {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+
+/* =====================================================
+   Artist Grid
+===================================================== */
+
+.artist-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 48px 22px;
+}
+
+.artist-card {
+  display: block;
+}
+
+.artist-image-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: #e9e9e5;
+}
+
+.artist-image-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s cubic-bezier(0.2, 0.6, 0.2, 1);
+}
+
+.artist-card:hover .artist-image-wrap img {
+  transform: scale(1.035);
+}
+
+.artist-card-info {
+  padding-top: 18px;
+}
+
+.artist-name {
+  font-size: 23px;
+  font-weight: 600;
+  letter-spacing: -0.035em;
+}
+
+.artist-type {
+  margin-top: 5px;
+  font-size: 12px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* =====================================================
+   News
+===================================================== */
+
+.news-list {
+  border-top: 1px solid #bbb;
+}
+
+.news-item {
+  display: grid;
+  grid-template-columns: 160px 100px 1fr 50px;
+  gap: 25px;
+  align-items: center;
+  min-height: 92px;
+  border-bottom: 1px solid #ccc;
+  transition:
+    padding-left 0.25s ease,
+    background 0.25s ease;
+}
+
+.news-item:hover {
+  padding-left: 14px;
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.news-date,
+.news-category {
+  font-size: 12px;
+  color: #777;
+}
+
+.news-title {
+  font-size: 20px;
+  letter-spacing: -0.025em;
+}
+
+.news-arrow {
+  font-size: 22px;
+  text-align: right;
+}
+
+/* =====================================================
+   Company Statement
+===================================================== */
+
+.company-statement {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.company-statement-small {
+  margin-top: 40px;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+}
+
+/* =====================================================
+   Footer
+===================================================== */
+
+.site-footer {
+  background: #111;
+  color: #fff;
+  padding: 70px 0 35px;
+}
+
+.footer-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.footer-logo {
+  font-size: clamp(60px, 10vw, 150px);
+  font-weight: 700;
+  line-height: 0.85;
+  letter-spacing: -0.07em;
+}
+
+.footer-company {
+  text-align: right;
+  font-size: 12px;
+  line-height: 1.8;
+  color: #aaa;
+}
+
+.footer-bottom {
+  margin-top: 80px;
+  padding-top: 22px;
+  border-top: 1px solid #333;
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #777;
+}
+
+/* =====================================================
+   Detail Pages
+===================================================== */
+
+.page-header {
+  padding-top: 180px;
+  padding-bottom: 65px;
+}
+
+.page-title {
+  font-size: clamp(58px, 9vw, 130px);
+  line-height: 0.9;
+  letter-spacing: -0.06em;
+  font-weight: 700;
+}
+
+.artist-detail-hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 720px;
+}
+
+.artist-detail-image {
+  height: 100%;
+  min-height: 720px;
+  background: #e7e7e3;
+}
+
+.artist-detail-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.artist-detail-content {
+  padding: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.artist-detail-name {
+  font-size: clamp(55px, 7vw, 110px);
+  line-height: 0.9;
+  letter-spacing: -0.06em;
+}
+
+.artist-detail-en {
+  margin-top: 15px;
+  font-size: 18px;
+  color: #777;
+}
+
+.artist-detail-summary {
+  max-width: 550px;
+  margin-top: 50px;
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+/* =====================================================
+   Article
+===================================================== */
+
+.article-wrap {
+  max-width: 950px;
+  margin: 0 auto;
+  padding: 180px 48px 130px;
+}
+
+.article-category {
+  margin-bottom: 20px;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: #777;
+}
+
+.article-title {
+  font-size: clamp(42px, 6vw, 82px);
+  line-height: 1.05;
+  letter-spacing: -0.05em;
+}
+
+.article-date {
+  margin-top: 30px;
+  font-size: 13px;
+  color: #888;
+}
+
+.article-body {
+  margin-top: 80px;
+  font-size: 17px;
+  line-height: 1.9;
+}
+
+.article-body p {
+  margin-bottom: 25px;
+}
+
+/* =====================================================
+   Responsive
+===================================================== */
+
+@media (max-width: 900px) {
+  .site-container {
+    padding-left: 22px;
+    padding-right: 22px;
   }
 
-  /* 컨테이너 너비 및 중앙 정렬, 여백 지정 */
-  main {
-    @apply max-w-5xl mx-auto px-6 py-12 min-h-[calc(100vh-160px)];
+  .header-inner {
+    height: 70px;
   }
 
-  /* 헤더 스타일링 */
-  header {
-    @apply border-b border-neutral-800 bg-neutral-900/80 backdrop-blur sticky top-0 z-50;
+  .header-nav {
+    gap: 16px;
   }
 
-  header > div {
-    @apply max-w-5xl mx-auto px-6 py-4 flex items-center justify-between;
+  .header-nav a {
+    font-size: 11px;
   }
 
-  /* 푸터 스타일링 */
-  footer {
-    @apply border-t border-neutral-800 py-8 text-center text-sm text-neutral-500 bg-neutral-950;
+  .section {
+    padding-top: 80px;
+    padding-bottom: 80px;
   }
 
-  /* 제목 태그 기본 여백 */
-  h1 {
-    @apply text-3xl font-bold mb-6 text-white tracking-tight;
-  }
-  
-  h2 {
-    @apply text-xl font-semibold mb-4 text-neutral-200;
+  .artist-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 35px 12px;
   }
 
-  /* 뉴스/아티스트 리스트 카드 간격 설정 */
-  .grid-container {
-    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-6;
+  .news-item {
+    grid-template-columns: 85px 1fr 25px;
+    gap: 10px;
   }
 
-  .card {
-    @apply bg-neutral-900 border border-neutral-800 rounded-xl p-5 hover:border-neutral-700 transition-all duration-200;
+  .news-category {
+    display: none;
+  }
+
+  .artist-detail-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .artist-detail-image {
+    min-height: auto;
+    aspect-ratio: 4 / 5;
+  }
+
+  .artist-detail-content {
+    padding: 50px 22px 80px;
+  }
+
+  .footer-top {
+    flex-direction: column;
+    gap: 50px;
+  }
+
+  .footer-company {
+    text-align: left;
+  }
+}
+
+@media (max-width: 600px) {
+  .header-nav a:nth-child(1) {
+    display: none;
+  }
+
+  .artist-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero {
+    min-height: 88vh;
+  }
+
+  .hero-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 35px;
+  }
+
+  .news-title {
+    font-size: 16px;
+  }
+
+  .article-wrap {
+    padding-left: 22px;
+    padding-right: 22px;
   }
 }
