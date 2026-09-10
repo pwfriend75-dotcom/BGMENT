@@ -70,18 +70,12 @@ export default function ArtistDetail({ artist }) {
         </div>
       </section>
 
-      {artist.detail && (
+      {/* NOTION PAGE CONTENT */}
+      {artist.blocks && artist.blocks.length > 0 && (
         <section className="section section-line">
           <div className="site-container">
-            <div
-              style={{
-                maxWidth: '900px',
-                fontSize: '18px',
-                lineHeight: '1.9',
-                whiteSpace: 'pre-line',
-              }}
-            >
-              {artist.detail}
+            <div className="artist-notion-content">
+              <NotionBlocks blocks={artist.blocks} />
             </div>
           </div>
         </section>
@@ -89,6 +83,139 @@ export default function ArtistDetail({ artist }) {
     </>
   );
 }
+
+
+/* =====================================================
+   NOTION BLOCK RENDERER
+===================================================== */
+
+function NotionBlocks({ blocks }) {
+  return (
+    <>
+      {blocks.map((block) => {
+        const type = block.type;
+
+        if (type === 'paragraph') {
+          const text = getRichText(block.paragraph?.rich_text);
+
+          if (!text) {
+            return <div key={block.id} style={{ height: '18px' }} />;
+          }
+
+          return (
+            <p key={block.id}>
+              {text}
+            </p>
+          );
+        }
+
+        if (type === 'heading_1') {
+          return (
+            <h2 key={block.id}>
+              {getRichText(block.heading_1?.rich_text)}
+            </h2>
+          );
+        }
+
+        if (type === 'heading_2') {
+          return (
+            <h3 key={block.id}>
+              {getRichText(block.heading_2?.rich_text)}
+            </h3>
+          );
+        }
+
+        if (type === 'heading_3') {
+          return (
+            <h4 key={block.id}>
+              {getRichText(block.heading_3?.rich_text)}
+            </h4>
+          );
+        }
+
+        if (type === 'bulleted_list_item') {
+          return (
+            <ul key={block.id}>
+              <li>
+                {getRichText(
+                  block.bulleted_list_item?.rich_text
+                )}
+              </li>
+            </ul>
+          );
+        }
+
+        if (type === 'numbered_list_item') {
+          return (
+            <ol key={block.id}>
+              <li>
+                {getRichText(
+                  block.numbered_list_item?.rich_text
+                )}
+              </li>
+            </ol>
+          );
+        }
+
+        if (type === 'quote') {
+          return (
+            <blockquote key={block.id}>
+              {getRichText(block.quote?.rich_text)}
+            </blockquote>
+          );
+        }
+
+        if (type === 'divider') {
+          return <hr key={block.id} />;
+        }
+
+        if (type === 'image') {
+          const imageUrl =
+            block.image?.file?.url ||
+            block.image?.external?.url ||
+            '';
+
+          if (!imageUrl) return null;
+
+          return (
+            <figure key={block.id}>
+              <img
+                src={imageUrl}
+                alt=""
+              />
+
+              {block.image?.caption?.length > 0 && (
+                <figcaption>
+                  {getRichText(block.image.caption)}
+                </figcaption>
+              )}
+            </figure>
+          );
+        }
+
+        return null;
+      })}
+    </>
+  );
+}
+
+
+/* =====================================================
+   NOTION RICH TEXT
+===================================================== */
+
+function getRichText(richText) {
+  if (!richText) return '';
+
+  return richText
+    .map((item) => item.plain_text || '')
+    .join('');
+}
+
+
+/* =====================================================
+   DATE
+===================================================== */
 
 function formatDate(date) {
   if (!date) return '';
@@ -104,6 +231,11 @@ function formatDate(date) {
     .replaceAll('-', '.');
 }
 
+
+/* =====================================================
+   NEXT.JS
+===================================================== */
+
 export async function getStaticPaths() {
   const artists = await getArtists();
 
@@ -118,6 +250,7 @@ export async function getStaticPaths() {
     fallback: 'blocking',
   };
 }
+
 
 export async function getStaticProps({ params }) {
   const artist = await getArtistById(params.id);
