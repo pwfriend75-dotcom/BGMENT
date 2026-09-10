@@ -1,28 +1,21 @@
 import Link from 'next/link';
-import { getArtists, getNews } from '../lib/notion';
+import { getNews } from '../../lib/notion';
 
 export async function getStaticProps() {
   try {
-    const [artists, newsList] = await Promise.all([
-      getArtists(),
-      getNews(),
-    ]);
+    const newsList = await getNews();
 
     return {
       props: {
-        artists: artists.slice(0, 4),
-        newsList: newsList.slice(0, 5),
+        newsList,
       },
-
-      // 60초마다 Notion 데이터 갱신
       revalidate: 60,
     };
   } catch (error) {
-    console.error('Home getStaticProps Error:', error);
+    console.error('News List getStaticProps Error:', error);
 
     return {
       props: {
-        artists: [],
         newsList: [],
       },
       revalidate: 60,
@@ -46,109 +39,71 @@ function formatDate(dateString) {
   }
 }
 
-export default function Home({ artists = [], newsList = [] }) {
+export default function NewsList({ newsList = [] }) {
   return (
-    <div>
+    <main className="min-h-screen bg-black text-white">
 
-      {/* =========================
-          HERO
-      ========================== */}
-      <section className="relative h-[70vh] flex items-center justify-center bg-zinc-900 overflow-hidden">
+      <section className="max-w-5xl mx-auto px-6 pt-24 pb-12">
 
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black opacity-80" />
+        <p className="text-xs text-gray-500 uppercase tracking-[0.3em] mb-3">
+          BGM Entertainment
+        </p>
 
-        <div className="relative z-10 text-center px-4">
+        <h1 className="text-4xl md:text-6xl font-black tracking-tight">
+          NEWS & NOTICE
+        </h1>
 
-          <h1 className="text-5xl md:text-7xl font-black tracking-tighter mb-4 uppercase">
-            BGM ENTERTAINMENT
-          </h1>
-
-          <p className="text-lg md:text-xl text-gray-400 font-light max-w-2xl mx-auto">
-            Create Beyond Sound, Inspire the Future
-          </p>
-
-        </div>
+        <p className="text-gray-500 mt-4">
+          BGM Entertainment Announcement
+        </p>
 
       </section>
 
 
-      {/* =========================
-          ARTISTS
-      ========================== */}
-      <section className="max-w-7xl mx-auto px-6 py-20">
+      <section className="max-w-5xl mx-auto px-6 pb-24">
 
-        <div className="flex justify-between items-end mb-10">
+        {newsList.length > 0 ? (
 
-          <div>
+          <div className="border-t border-zinc-800">
 
-            <h2 className="text-xs text-gray-500 uppercase tracking-widest font-semibold mb-1">
-              Lineup
-            </h2>
-
-            <h3 className="text-3xl font-bold tracking-tight">
-              ARTISTS
-            </h3>
-
-          </div>
-
-
-          <Link
-            href="/artist"
-            className="text-sm text-gray-400 hover:text-white transition"
-          >
-            VIEW ALL →
-          </Link>
-
-        </div>
-
-
-        {artists.length > 0 ? (
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-
-            {artists.map((artist) => (
+            {newsList.map((item) => (
 
               <Link
-                key={artist.id}
-                href={`/artist/${artist.id}`}
-                className="group"
+                key={item.id}
+                href={`/news/${item.id}`}
+                className="block"
               >
 
-                <div className="cursor-pointer bg-zinc-950 rounded-lg overflow-hidden border border-zinc-800 hover:border-zinc-600 transition">
+                <article className="border-b border-zinc-800 py-6 px-2 hover:bg-zinc-950 transition">
 
-                  <div className="overflow-hidden bg-zinc-900">
+                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
 
-                    <img
-                      src={artist.thumbnail}
-                      alt={artist.name}
-                      className="w-full h-72 object-cover group-hover:scale-105 transition duration-500"
-                    />
+                    <div className="flex items-center gap-4 min-w-0">
 
-                  </div>
+                      <span
+                        className={`shrink-0 text-[11px] px-2 py-1 rounded font-medium ${
+                          item.category === '공지'
+                            ? 'bg-red-900/40 text-red-400 border border-red-800/50'
+                            : 'bg-zinc-800 text-gray-300'
+                        }`}
+                      >
+                        {item.category}
+                      </span>
+
+                      <h2 className="text-sm md:text-base font-medium text-white truncate">
+                        {item.title}
+                      </h2>
+
+                    </div>
 
 
-                  <div className="p-4">
-
-                    <span className="text-[10px] text-gray-500 uppercase tracking-widest">
-                      {artist.type}
-                    </span>
-
-                    <h4 className="text-lg font-bold mt-1 text-white">
-                      {artist.name}
-                    </h4>
-
-
-                    {artist.englishName && (
-
-                      <p className="text-sm text-gray-500 mt-1">
-                        {artist.englishName}
-                      </p>
-
-                    )}
+                    <time className="text-xs text-gray-500 md:ml-6 whitespace-nowrap">
+                      {formatDate(item.date)}
+                    </time>
 
                   </div>
 
-                </div>
+                </article>
 
               </Link>
 
@@ -158,10 +113,10 @@ export default function Home({ artists = [], newsList = [] }) {
 
         ) : (
 
-          <div className="border border-zinc-800 rounded-lg py-16 text-center">
+          <div className="border border-zinc-800 rounded-xl py-20 text-center">
 
             <p className="text-gray-500">
-              등록된 아티스트가 없습니다.
+              등록된 뉴스가 없습니다.
             </p>
 
           </div>
@@ -170,101 +125,6 @@ export default function Home({ artists = [], newsList = [] }) {
 
       </section>
 
-
-      {/* =========================
-          NEWS
-      ========================== */}
-      <section className="bg-zinc-950 border-t border-zinc-900 py-20">
-
-        <div className="max-w-7xl mx-auto px-6">
-
-          <div className="flex justify-between items-end mb-10">
-
-            <div>
-
-              <h2 className="text-xs text-gray-500 uppercase tracking-widest font-semibold mb-1">
-                Notice & News
-              </h2>
-
-              <h3 className="text-3xl font-bold tracking-tight">
-                LATEST NEWS
-              </h3>
-
-            </div>
-
-
-            <Link
-              href="/news"
-              className="text-sm text-gray-400 hover:text-white transition"
-            >
-              VIEW ALL →
-            </Link>
-
-          </div>
-
-
-          {newsList.length > 0 ? (
-
-            <div className="divide-y divide-zinc-800">
-
-              {newsList.map((item) => (
-
-                <Link
-                  key={item.id}
-                  href={`/news/${item.id}`}
-                  className="block"
-                >
-
-                  <div className="py-4 flex items-center justify-between hover:bg-zinc-900/50 px-2 transition rounded cursor-pointer">
-
-                    <div className="flex items-center gap-4">
-
-                      <span
-                        className={`text-[11px] px-2 py-0.5 rounded font-medium ${
-                          item.category === '공지'
-                            ? 'bg-red-900/40 text-red-400 border border-red-800/50'
-                            : 'bg-zinc-800 text-gray-300'
-                        }`}
-                      >
-                        {item.category}
-                      </span>
-
-
-                      <span className="text-sm font-medium text-zinc-200">
-                        {item.title}
-                      </span>
-
-                    </div>
-
-
-                    <span className="text-xs text-gray-500 ml-4 whitespace-nowrap">
-                      {formatDate(item.date)}
-                    </span>
-
-                  </div>
-
-                </Link>
-
-              ))}
-
-            </div>
-
-          ) : (
-
-            <div className="border border-zinc-800 rounded-lg py-16 text-center">
-
-              <p className="text-gray-500">
-                등록된 뉴스가 없습니다.
-              </p>
-
-            </div>
-
-          )}
-
-        </div>
-
-      </section>
-
-    </div>
+    </main>
   );
 }
